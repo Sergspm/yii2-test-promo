@@ -8,7 +8,7 @@ use app\models\PromoCodeForm;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Список промо-кодов';
+$this->title = Yii::t('app/promo', 'List of promo codes');
 ?>
 <div class="site-index">
 	<?= GridView::widget([
@@ -16,35 +16,56 @@ $this->title = 'Список промо-кодов';
 		'columns' => [
 			[
 				'attribute' => 'id',
-				'label' => '№'
-			], [
-				'attribute' => 'id_city',
-				'label' => 'Тарифная зона',
-				'value' => function($model) {
+				'label'     => '№'
+			],
+
+			[
+				'attribute' => 'name',
+				'label'     => Yii::t('app/promo', 'Promo code name')
+			],
+
+			[
+				'attribute' => 'zone',
+				'label'     => Yii::t('app/promo', 'Promo code tarifzone'),
+				'value'     => function($model) {
 					/** @var app\models\PromoCode $model */
-					$list = PromoCodeForm::getCitiesList();
-					return $list[$model->id_city];
+					$list = PromoCodeForm::getZonesList();
+					return $list[$model->zone];
 				}
-			], [
+			],
+
+			[
 				'attribute' => 'reward_sum',
-				'label' => 'вознаграждение клиента'
-			], [
+				'label'     => Yii::t('app/promo', 'Sum of client reward')
+			],
+
+			[
 				'attribute' => 'code_status',
-				'label' => 'Статус',
-				'value' => function($model) {
+				'label'     => Yii::t('app/promo', 'Promo code status'),
+				'value'     => function($model) {
 					/** @var app\models\PromoCode $model */
 					return $model->getStatusLabel();
 				}
-			], [
+			],
+
+			[
 				'attribute' => 'date_start',
-				'label' => 'дата начала'
-			], [
+				'label'     => Yii::t('app/promo', 'Promo code date start')
+			],
+
+			[
 				'attribute' => 'date_end',
-				'label' => 'дата окончания'
-			], [
+				'label' => Yii::t('app/promo', 'Promo code date end')
+			],
+
+			[
 				'format' => 'html',
-				'value' => function($model) {
-					return Html::a('Редактировать', Url::to(['site/edit-promo-code', 'id' => $model->id]), ['class' => 'btn btn-primary']);
+				'value'  => function($model) {
+					return Html::a(
+						Yii::t('app/promo', 'Edit'),
+						Url::to(['site/edit-promo-code', 'id' => $model->id]),
+						['class' => 'btn btn-primary']
+					);
 				}
 			],
 		],
